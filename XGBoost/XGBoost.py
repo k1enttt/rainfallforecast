@@ -101,7 +101,7 @@ xgb_params = {
     'n_jobs': -1,
     'tree_method': 'hist',
     'early_stopping_rounds': 100,
-    'validation_indicator_col': 'validation_0'
+    'validation_indicator_col': 'validation_1'
 }
 
 # Khởi tạo mô hình
@@ -112,7 +112,7 @@ print("Đang huấn luyện...")
 start_time = time.time()
 model.fit(
     X_train, y_train,
-    eval_set=[(X_val, y_val)],
+    eval_set=[(X_train, y_train), (X_val, y_val)],
     verbose=True
 )
 train_time = time.time() - start_time
@@ -166,8 +166,10 @@ train_info = f"xgb_rounds{model.best_iteration}_lr{xgb_params['eta']}_lb{LOOKBAC
 
 # Report 1: Biểu đồ Lịch sử Huấn luyện (Evaluation Curve)
 fig1, ax1 = plt.subplots(figsize=(12, 6))
-val_mae = evals_result['validation_0']['mae']
+train_mae = evals_result['validation_0']['mae']  # MAE của tập huấn luyện
+val_mae = evals_result['validation_1']['mae']    # MAE của tập kiểm tra
 epochs = range(1, len(val_mae) + 1)
+ax1.plot(epochs, train_mae, label='Training MAE', color='green', linewidth=2)
 ax1.plot(epochs, val_mae, label='Validation MAE', color='blue', linewidth=2)
 ax1.set_title('Báo cáo 1: Diễn biến Validation MAE', fontsize=16)
 ax1.set_xlabel('Epoch', fontsize=12)

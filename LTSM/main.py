@@ -180,8 +180,6 @@ print(f"Root Relative Squared Error: {real_scale_rrse:.6f}")
 print("\nBắt đầu Bước 8: Trực quan hóa và báo cáo...")
 
 # Vẽ và lưu biểu đồ loss
-
-
 plt.figure(figsize=(10, 5))
 plt.plot(history.history['loss'], label='Training Loss')
 plt.plot(history.history['val_loss'], label='Validation Loss')
